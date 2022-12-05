@@ -19,6 +19,7 @@
   "license": "MIT",
   "homepage": "https://github.com/V1pi/native-logs#readme",
   "devDependencies": {
+    "@types/node": "^18.11.10",
     "@types/react-native": "^0.70.7",
     "react-native": "^0.41.2",
     "typescript": "^4.9.3"
