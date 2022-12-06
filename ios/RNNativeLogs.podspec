@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   RNNativeLogs
                    DESC
-  s.homepage     = "https://github.com/V1pi/native-logs#readme-+"
+  s.homepage     = "https://github.com/V1pi/native-logs#readme"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "viniciusspicanco@gmail.com" }

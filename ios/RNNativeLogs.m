@@ -35,12 +35,10 @@ RCT_EXPORT_METHOD(readOutputLogs:fileIdentifier resolver:(RCTPromiseResolveBlock
     NSString *documentsDirectory = [paths firstObject];
     NSString *logPath = [documentsDirectory stringByAppendingPathComponent:fileIdentifier];
     
-    // read everything from text
     NSString* fileContents =
           [NSString stringWithContentsOfFile:logPath
            encoding:NSUTF8StringEncoding error:nil];
   
-    // first, separate by new line
     NSArray* allLinedStrings =
           [fileContents componentsSeparatedByCharactersInSet:
           [NSCharacterSet newlineCharacterSet]];
@@ -50,7 +48,6 @@ RCT_EXPORT_METHOD(readOutputLogs:fileIdentifier resolver:(RCTPromiseResolveBlock
      
    NSArray* allnNewlogsArray  = [allLinedStrings subarrayWithRange:NSMakeRange(startIndex, self.currentLogIndex - startIndex)];
     
-    // Return false when there is no new logs
     if(allnNewlogsArray.count < 1) {
         resolve(NULL);
         return;
