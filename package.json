@@ -1,11 +1,13 @@
 {
   "name": "rn-native-logs",
   "version": "0.0.1",
-  "description": "A way to get all native logs from android and iOS",
+  "description": "A way to get all native logs from Android and iOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc -p ./tsconfig.json",
+    "prepare": "yarn build",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -15,9 +17,23 @@
     "react-native",
     "native-logs"
   ],
-  "author": "",
+  "author": {
+    "name": "Vinicius Picanco",
+    "email": "viniciusspicanco@gmail.com"
+  },
+  "files": [
+    "dist",
+    "android/build.gradle",
+    "android/src",
+    "ios/RNNativeLogs.h",
+    "ios/RNNativeLogs.m",
+    "ios/RNNativeLogs.podspec",
+    "ios/RNNativeLogs.xcworkspace/*.xcworkspacedata",
+    "ios/RNNativeLogs.xcodeproj/*.pbxproj"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/V1pi/native-logs#readme",
+  "bugs:": "https://github.com/V1pi/native-logs/issues",
   "devDependencies": {
     "@types/node": "^18.11.10",
     "@types/react-native": "^0.70.7",
