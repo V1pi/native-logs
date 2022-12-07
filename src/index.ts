@@ -3,10 +3,18 @@ import { NativeModules } from "react-native";
 export const { RNNativeLogs } = NativeModules;
 
 export const NativeLogs = {
-  getLogs: async (identifier: string): Promise<string[] | null> => {
-    return RNNativeLogs.readOutputLogs(identifier);
+  currentLogIndex: 0,
+  async getLogs(identifier: string) {
+    const allNativeLogs = await RNNativeLogs.readOutputLogs(identifier);
+    const arrayWithNewlogs = allNativeLogs.slice(this.currentLogIndex);
+    this.currentLogIndex = allNativeLogs.length - 1;
+    if (arrayWithNewlogs.length < 0) {
+      return null;
+    }
+    return arrayWithNewlogs;
   },
-  redirectLogs: async (identifier: string): Promise<void> => {
+  async redirectLogs(identifier: string) {
+    this.currentLogIndex = 0;
     return RNNativeLogs.setUpRedirectLogs(identifier);
   },
 };
