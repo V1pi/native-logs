@@ -37,9 +37,8 @@ RCT_EXPORT_METHOD(readOutputLogs:fileIdentifier resolver:(RCTPromiseResolveBlock
     [fileContents componentsSeparatedByCharactersInSet:
      [NSCharacterSet newlineCharacterSet]];
     
-    if(allLinedStrings.count < 1) {
-        resolve(NULL);
-
+    if(!allLinedStrings) {
+        resolve(@[]);
         return;
     }
     resolve(allLinedStrings);
