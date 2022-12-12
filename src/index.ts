@@ -21,7 +21,7 @@ export const NativeLogs = {
   async getNewLogs(identifier: string): Promise<string[] | null> {
     const allNativeLogs = await RNNativeLogs.readOutputLogs(identifier);
     const arrayWithNewlogs = allNativeLogs.slice(this.currentLogsIndex[identifier] || 0);
-    this.currentLogsIndex[identifier] = Math.max(0, allNativeLogs.length - 1);
+    this.currentLogsIndex[identifier] = Math.max(0, allNativeLogs.length);
     if (arrayWithNewlogs.length < 0) {
       return null;
     }
