@@ -1,13 +1,16 @@
+# RN Native Logs
+This package aims to get native logs from Android and iOS applications, it also gets React Native logs. This can be useful in case you are using a third-party package and don't have control over the logs and you want send the logs to a server or print them in a different place than the Output (TextView).
 
-# react-native-native-logs
+On iOS it works redirectly all logs that normally go to the XCode Output to a file saved in the app's documents folder. When redirection is enabled, you will not be able to see the logs in the XCode Output.
 
+Android version has not yet been implemented.
 ## Getting started
 
-`$ npm install react-native-native-logs --save`
+`$ npm install rn-native-logs --save`
 
 ### Mostly automatic installation
 
-`$ react-native link react-native-native-logs`
+`$ react-native link rn-native-logs`
 
 ### Manual installation
 
@@ -15,7 +18,7 @@
 #### iOS
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-native-logs` and add `RNNativeLogs.xcodeproj`
+2. Go to `node_modules` ➜ `rn-native-logs` and add `RNNativeLogs.xcodeproj`
 3. In XCode, in the project navigator, select your project. Add `libRNNativeLogs.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
@@ -26,28 +29,31 @@
   - Add `new RNNativeLogsPackage()` to the list returned by the `getPackages()` method
 2. Append the following lines to `android/settings.gradle`:
   	```
-  	include ':react-native-native-logs'
-  	project(':react-native-native-logs').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-native-logs/android')
+  	include ':rn-native-logs'
+  	project(':rn-native-logs').projectDir = new File(rootProject.projectDir, 	'../node_modules/rn-native-logs/android')
   	```
 3. Insert the following lines inside the dependencies block in `android/app/build.gradle`:
   	```
-      compile project(':react-native-native-logs')
+      compile project(':rn-native-logs')
   	```
-
-#### Windows
-[Read it! :D](https://github.com/ReactWindows/react-native)
-
-1. In Visual Studio add the `RNNativeLogs.sln` in `node_modules/react-native-native-logs/windows/RNNativeLogs.sln` folder to their solution, reference from their app.
-2. Open up your `MainPage.cs` app
-  - Add `using Native.Logs.RNNativeLogs;` to the usings at the top of the file
-  - Add `new RNNativeLogsPackage()` to the `List<IReactPackage>` returned by the `Packages` method
-
 
 ## Usage
 ```javascript
-import RNNativeLogs from 'react-native-native-logs';
+import { NativeLogs } from 'rn-native-logs';
 
-// TODO: What to do with the module?
-RNNativeLogs;
+// The lib uses this identifier to set the filename, must be unique
+const identifier = "unique-identifier"
+
+// The lib will start redirecting the logs to a file with same name as the identifier
+await NativeLogs.redirectLogs(identifier)
+
+// ...
+
+// Returns an array containing all new logs since the previous getNewLogs call, it returns null in case there are no new logs. It needs to pass the same identifier previously used to redirect.
+await NativeLogs.getNewLogs(identifier);
+
+// ...
+
+// Returns an array containing all logs, it returns null in case there are no new logs.
+await NativeLogs.getLogs(identifier);
 ```
-  
