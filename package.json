@@ -2,7 +2,7 @@
   "name": "rn-native-logs",
   "version": "0.0.3",
   "description": "A way to get all native logs from Android and iOS",
-  "main": "src/index.ts",,
+  "main": "src/index.ts",
   "scripts": {
     "build": "rm -rf dist && tsc -p ./tsconfig.json",
     "prepare": "yarn build",
