@@ -63,14 +63,20 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
 
         //Read text from file
         StringBuilder textArray = new StringBuilder();
-       WritableArray writableArray = new WritableNativeArray();
+        WritableArray writableArray = new WritableNativeArray();
 
         try {
-            // A DIFFERENT WAY TO GE THE TEXT
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                String content = new String(Files.readAllBytes(Paths.get(pathname)));
-            }
-            // Different way finish here
+//            // A DIFFERENT WAY TO GE THE TEXT Logs
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                String content = new String(Files.readAllBytes(Paths.get(pathname)));
+//                String[] linesArray = content.split("\\r?\\n");
+//                for(int i = 0; i < linesArray.length; i++)
+//                {
+//                    writableArray.pushString(linesArray[i]);
+//                }
+//            }
+
+            // FIRST WAY way 
             FileReader fileReader = new FileReader(file);
             BufferedReader br = new BufferedReader(fileReader);
             Log.e(" BufferedReader;", " bBufferedReader;");
