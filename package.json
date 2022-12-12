@@ -20,16 +20,6 @@
     "name": "Vinicius Picanco",
     "email": "viniciusspicanco@gmail.com"
   },
-  "files": [
-    "dist",
-    "android/build.gradle",
-    "android/src",
-    "ios/RNNativeLogs.h",
-    "ios/RNNativeLogs.m",
-    "ios/RNNativeLogs.podspec",
-    "ios/RNNativeLogs.xcworkspace/*.xcworkspacedata",
-    "ios/RNNativeLogs.xcodeproj/*.pbxproj"
-  ],
   "license": "MIT",
   "homepage": "https://github.com/V1pi/native-logs#readme",
   "bugs:": "https://github.com/V1pi/native-logs/issues",
