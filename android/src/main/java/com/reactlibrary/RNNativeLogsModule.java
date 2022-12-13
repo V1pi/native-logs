@@ -65,8 +65,6 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
         try {
             File file = getFile(fileIdentifier);
             WritableArray writableArray = new WritableNativeArray();
-
-            // FIRST WAY way
             FileReader fileReader = new FileReader(file);
             BufferedReader br = new BufferedReader(fileReader);
             boolean done = false;
