@@ -1,8 +1,9 @@
 {
   "name": "rn-native-logs",
-  "version": "0.0.4",
+  "version": "0.0.3",
   "description": "A way to get all native logs from Android and iOS",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf dist && tsc -p ./tsconfig.json",
     "prepare": "yarn build",
@@ -20,6 +21,16 @@
     "name": "Vinicius Picanco",
     "email": "viniciusspicanco@gmail.com"
   },
+  "files": [
+    "dist",
+    "android/build.gradle",
+    "android/src",
+    "ios/RNNativeLogs.h",
+    "ios/RNNativeLogs.m",
+    "ios/RNNativeLogs.podspec",
+    "ios/RNNativeLogs.xcworkspace/*.xcworkspacedata",
+    "ios/RNNativeLogs.xcodeproj/*.pbxproj"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/V1pi/native-logs#readme",
   "bugs:": "https://github.com/V1pi/native-logs/issues",
