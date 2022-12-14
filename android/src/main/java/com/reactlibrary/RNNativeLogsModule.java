@@ -1,3 +1,4 @@
+
 package com.reactlibrary;
 
 import java.io.BufferedReader;
@@ -70,7 +71,4 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
             promise.reject("Error when reading logs", String.valueOf(e));
         }
     }
-
-    ;
-
 }
