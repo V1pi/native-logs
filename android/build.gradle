@@ -1,3 +1,13 @@
+import groovy.json.JsonSlurper
+
+def getVersionFromNpm() {
+    //  Read and parse package.json file from project root
+    def inputFile = new File("$rootDir/../package.json")
+    def packageJson = new JsonSlurper().parseText(inputFile.text)
+
+    // Return the version, you can get any value this way
+    return packageJson["version"]
+}
 
 buildscript {
     repositories {
@@ -18,8 +28,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionName getVersionFromNpm()
     }
     lintOptions {
         abortOnError false

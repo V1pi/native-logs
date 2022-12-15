@@ -3,7 +3,7 @@ This package aims to get native logs from Android and iOS applications, it also 
 
 On iOS it works redirectly all logs that normally go to the XCode Output to a file saved in the app's documents folder. When redirection is enabled, you will not be able to see the logs in the XCode Output.
 
-Android version has not yet been implemented.
+On Android it works by running logcat and getting the logs based on your app's pid. The logs are redirected to a file and then the file is read.
 ## Getting started
 
 `$ npm install rn-native-logs --save`
