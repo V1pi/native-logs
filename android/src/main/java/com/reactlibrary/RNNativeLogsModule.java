@@ -44,7 +44,7 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
 
             if (logLevel != null) {
                 String packagePrefix = reactContext.getPackageName() + ":";
-                commandBuilder.append(" *:").append(logLevel).append(" ").append(packagePrefix).append(logLevel);
+                commandBuilder.append(" *:").append(logLevel);
             }
 
             String command = commandBuilder.toString();
