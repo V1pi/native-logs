@@ -55,6 +55,11 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void setUpRedirectLogs(String fileIdentifier, final Promise promise) {
+        setUpRedirectLogs(fileIdentifier, null, promise);
+    }
+
     private boolean isIgnoredTag(String line, ReadableArray tags) {
         for (int i = 0; i < tags.size(); i++) {
             String tag = tags.getString(i);
@@ -75,7 +80,7 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
 
             String line;
             while ((line = br.readLine()) != null) {
-                if (!isIgnoredTag(line, tags)) {
+                if (tags == null || !isIgnoredTag(line, tags)) {
                     writableArray.pushString(line);
                 }
             }
@@ -86,5 +91,10 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
         } catch (IOException e) {
             promise.reject("Error when reading logs", String.valueOf(e));
         }
+    }
+
+    @ReactMethod
+    public void readOutputLogs(String fileIdentifier, final Promise promise) {
+        readOutputLogs(fileIdentifier, null, promise);
     }
 }
