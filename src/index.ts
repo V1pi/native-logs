@@ -2,15 +2,17 @@ import { NativeModules, Platform } from "react-native";
 
 const { RNNativeLogs } = NativeModules;
 
+type LogLevel = "D" | "I" | "W" | "E" | "F";
+
 export const NativeLogs = {
   currentLogsIndex: {} as { [key: string]: number },
 
   /** Redirects the native logs from the console to a given file.
     * @param {string} identifier - The name of the file to write the logs to.
-    * @param {string} logLevel - [ANDROID only] The log level to redirect. Can be one of: "D" for debug, "I" for info, "W" for warn, "E" for error, "F" for fatal.
+    * @param {LogLevel} logLevel - [ANDROID only] The log level to redirect. Can be one of: "D" for debug, "I" for info, "W" for warn, "E" for error, "F" for fatal.
     * @returns {Promise<void>} - A promise that resolves when the logs are redirected.
   */
-  async redirectLogs(identifier: string, logLevel?: string): Promise<void> {
+  async redirectLogs(identifier: string, logLevel?: LogLevel): Promise<void> {
     this.currentLogsIndex[identifier] = 0;
     if (Platform.OS === "ios" || !logLevel) {
       await RNNativeLogs.setUpRedirectLogs(identifier);
@@ -25,14 +27,12 @@ export const NativeLogs = {
     * @returns {Promise<string[] | null>} - A promise that resolves with the new logs or null if there are no logs.
   */
   async getNewLogs(identifier: string, tags?: string[]): Promise<string[] | null> {
-    let allNativeLogs: string[];
-    if (Platform.OS === "ios") {
-      allNativeLogs = await RNNativeLogs.readOutputLogs(identifier);
-    } else {
-      allNativeLogs = tags ?
+    const allNativeLogs = Platform.OS === "ios" ?
+      await RNNativeLogs.readOutputLogs(identifier) :
+      (tags ?
         await RNNativeLogs.readOutputLogs(identifier, tags) :
-        await RNNativeLogs.readOutputLogs(identifier);
-    }
+        await RNNativeLogs.readOutputLogs(identifier));
+
     const arrayWithNewlogs = allNativeLogs.slice(this.currentLogsIndex[identifier] || 0);
     this.currentLogsIndex[identifier] = Math.max(0, allNativeLogs.length);
     if (arrayWithNewlogs.length < 1) {
