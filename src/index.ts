@@ -43,10 +43,10 @@ export const NativeLogs = {
 
   /** Gets all logs from the given file.
     * @param {string} identifier - The name of the file to read the logs to.
-    * @param {string[]} tags - An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
+    * @param {string[]} tags - [ANDROID only] An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
     * @returns {Promise<string[] | null>} - A promise that resolves with the logs or null if there are no logs.
   */
-  async getLogs(identifier: string, tags: string[]): Promise<string[] | null> {
+  async getLogs(identifier: string, tags?: string[]): Promise<string[] | null> {
     const allNativeLogs = await RNNativeLogs.readOutputLogs(identifier, tags);
     if (allNativeLogs.length < 1) {
       return null;
