@@ -9,7 +9,7 @@ export const NativeLogs = {
 
   /** Redirects the native logs from the console to a given file.
     * @param {string} identifier - The name of the file to write the logs to.
-    * @param {LogLevel} logLevel - [ANDROID only] The log level to redirect. Can be one of: "D" for debug, "I" for info, "W" for warn, "E" for error, "F" for fatal.
+    * @param {LogLevel | undefined} logLevel - [ANDROID only] The log level to redirect. Can be one of: "D" for debug, "I" for info, "W" for warn, "E" for error, "F" for fatal.
     * @returns {Promise<void>} - A promise that resolves when the logs are redirected.
   */
   async redirectLogs(identifier: string, logLevel?: LogLevel): Promise<void> {
@@ -23,15 +23,13 @@ export const NativeLogs = {
 
   /** Gets all new logs since the last call to this function.
     * @param {string} identifier - The name of the file to read the logs to.
-    * @param {string[]} tags - [ANDROID only] An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
+    * @param {string[] | undefined} tags - [ANDROID only] An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
     * @returns {Promise<string[] | null>} - A promise that resolves with the new logs or null if there are no logs.
   */
   async getNewLogs(identifier: string, tags?: string[]): Promise<string[] | null> {
-    const allNativeLogs = Platform.OS === "ios" ?
+    const allNativeLogs = Platform.OS === "ios" || !tags ?
       await RNNativeLogs.readOutputLogs(identifier) :
-      (tags ?
-        await RNNativeLogs.readOutputLogs(identifier, tags) :
-        await RNNativeLogs.readOutputLogs(identifier));
+      await RNNativeLogs.readOutputLogs(identifier, tags);
 
     const arrayWithNewlogs = allNativeLogs.slice(this.currentLogsIndex[identifier] || 0);
     this.currentLogsIndex[identifier] = Math.max(0, allNativeLogs.length);
@@ -43,11 +41,13 @@ export const NativeLogs = {
 
   /** Gets all logs from the given file.
     * @param {string} identifier - The name of the file to read the logs to.
-    * @param {string[]} tags - [ANDROID only] An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
+    * @param {string[] | undefined} tags - [ANDROID only] An array of tags to exclude from the logs. Only logs that do not match these tags will be redirected.
     * @returns {Promise<string[] | null>} - A promise that resolves with the logs or null if there are no logs.
   */
   async getLogs(identifier: string, tags?: string[]): Promise<string[] | null> {
-    const allNativeLogs = await RNNativeLogs.readOutputLogs(identifier, tags);
+    const allNativeLogs = Platform.OS === "ios" || !tags ?
+      await RNNativeLogs.readOutputLogs(identifier) :
+      await RNNativeLogs.readOutputLogs(identifier, tags);
     if (allNativeLogs.length < 1) {
       return null;
     }
