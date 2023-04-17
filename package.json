@@ -1,6 +1,6 @@
 {
   "name": "rn-native-logs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A way to get all native logs from Android and iOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
