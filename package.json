@@ -1,6 +1,6 @@
 {
   "name": "rn-native-logs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A way to get all native logs from Android and iOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,10 +37,12 @@
   "devDependencies": {
     "@types/node": "^18.11.10",
     "@types/react-native": "^0.70.7",
+    "react": "^15.4.0",
     "react-native": "^0.41.2",
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
-    "react-native": "^0.41.2"
+    "react": "*",
+    "react-native": "*"
   }
 }

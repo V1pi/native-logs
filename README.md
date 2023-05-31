@@ -41,19 +41,16 @@ On Android it works by running logcat and getting the logs based on your app's p
 ```javascript
 import { NativeLogs } from 'rn-native-logs';
 
-// The lib uses this identifier to set the filename, must be unique
-const identifier = "unique-identifier"
-
-// The lib will start redirecting the logs to a file with same name as the identifier
-await NativeLogs.redirectLogs(identifier)
+// The lib will start redirecting the logs to a file
+await NativeLogs.redirectLogs()
 
 // ...
 
-// Returns an array containing all new logs since the previous getNewLogs call, it returns null in case there are no new logs. It needs to pass the same identifier previously used to redirect.
-await NativeLogs.getNewLogs(identifier);
+// Returns an array containing all new logs since the previous getNewLogs call, it returns null in case there are no new logs.
+await NativeLogs.getNewLogs();
 
 // ...
 
-// Returns an array containing all logs, it returns null in case there are no new logs.
-await NativeLogs.getLogs(identifier);
+// Returns a string with the path of the log file
+await NativeLogs.getFilePath();
 ```

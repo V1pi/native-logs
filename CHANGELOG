@@ -1,3 +1,7 @@
+0.0.6 June 01, 2023
+  - Add a new way to handle Android tags
+  - Use streams to read log file to reduce memory usage
+  - Remove file identifier from the calls
 0.0.5 April 17, 2023
   - Add filtering functionality to Android logs
 0.0.4 December 15, 2022

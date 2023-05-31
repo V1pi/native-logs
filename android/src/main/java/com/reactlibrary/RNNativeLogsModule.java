@@ -1,10 +1,18 @@
 
 package com.reactlibrary;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -16,6 +24,11 @@ import com.facebook.react.bridge.WritableNativeArray;
 
 public class RNNativeLogsModule extends ReactContextBaseJavaModule {
     private final ReactApplicationContext reactContext;
+    private BufferedReader reader = null;
+    private static final int MAX_LINES = 64;
+
+    private final String FILE_NAME = String.format(Locale.US, "%s-%s.txt", "NativeLogs",
+            UUID.randomUUID().getLeastSignificantBits() & Long.MAX_VALUE);
 
     public RNNativeLogsModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -27,24 +40,29 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
         return "RNNativeLogs";
     }
 
-    private File getFile(String fileIdentifier) {
+    private File getFile() {
         File path = this.reactContext.getFilesDir();
-        String pathname = path + "/" + fileIdentifier + ".txt";
+        String pathname = path + "/" + FILE_NAME + ".txt";
         return new File(pathname);
     }
 
     @ReactMethod
-    public void setUpRedirectLogs(String fileIdentifier, String logLevel, final Promise promise) {
+    public void setUpRedirectLogs(ReadableArray tags, final Promise promise) {
         try {
-            File file = getFile(fileIdentifier);
-            file.createNewFile();
+            if(reader != null) {
+                promise.resolve(true);
+                return;
+            }
+            File file = getFile();
             int pid = android.os.Process.myPid();
             StringBuilder commandBuilder = new StringBuilder();
-            commandBuilder.append("logcat -v time -f ").append(file.getAbsolutePath()).append(" --pid=").append(pid);
+            commandBuilder.append(String.format(Locale.US,"logcat -v time -f %s --pid=%d", file.getAbsolutePath(), pid));
 
-            if (logLevel != null) {
-                String packagePrefix = reactContext.getPackageName() + ":";
-                commandBuilder.append(" *:").append(logLevel);
+            if (tags != null && tags.size() > 0) {
+                for (int i = 0; i < tags.size(); i++) {
+                    String tag = tags.getString(i);
+                    commandBuilder.append(String.format(Locale.US, " %s", tag));
+                }
             }
 
             String command = commandBuilder.toString();
@@ -56,36 +74,26 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setUpRedirectLogs(String fileIdentifier, final Promise promise) {
-        setUpRedirectLogs(fileIdentifier, null, promise);
-    }
-
-    private boolean isIgnoredTag(String line, ReadableArray tags) {
-        for (int i = 0; i < tags.size(); i++) {
-            String tag = tags.getString(i);
-            if (line.contains(tag)) {
-                return true;
-            }
-        }
-        return false;
+    public void setUpRedirectLogs(final Promise promise) {
+        setUpRedirectLogs(null, promise);
     }
 
     @ReactMethod
-    public void readOutputLogs(String fileIdentifier, ReadableArray tags, final Promise promise) {
+    public void readOutputLogs(final Promise promise) {
         try {
-            File file = getFile(fileIdentifier);
-            WritableArray writableArray = new WritableNativeArray();
-            FileReader fileReader = new FileReader(file);
-            BufferedReader br = new BufferedReader(fileReader);
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (tags == null || !isIgnoredTag(line, tags)) {
-                    writableArray.pushString(line);
-                }
+            if (reader == null) {
+                File file = getFile();
+                FileReader fileReader = new FileReader(file);
+                reader = new BufferedReader(fileReader);
             }
-            br.close();
-            fileReader.close();
+            WritableArray writableArray = new WritableNativeArray();
+            String line;
+            int count = 0;
+
+            while (count < MAX_LINES && (line = Objects.requireNonNull(reader).readLine()) != null) {
+                writableArray.pushString(line);
+                count++;
+            }
 
             promise.resolve(writableArray);
         } catch (IOException e) {
@@ -94,7 +102,7 @@ public class RNNativeLogsModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void readOutputLogs(String fileIdentifier, final Promise promise) {
-        readOutputLogs(fileIdentifier, null, promise);
+    public void getFilePath(final Promise promise) {
+        promise.resolve(getFile().getAbsolutePath());
     }
 }
