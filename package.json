@@ -1,6 +1,6 @@
 {
   "name": "rn-native-logs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A way to get all native logs from Android and iOS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,6 +25,8 @@
     "dist",
     "android/build.gradle",
     "android/src",
+    "ios/CircularQueue.h",
+    "ios/CircularQueue.m",
     "ios/RNNativeLogs.h",
     "ios/RNNativeLogs.m",
     "ios/RNNativeLogs.podspec",
